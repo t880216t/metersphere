@@ -37,7 +37,11 @@ export function logout() {
       sessionStorage.removeItem(ORGANIZATION_ID);
       sessionStorage.removeItem(WORKSPACE_ID);
       sessionStorage.removeItem(PROJECT_ID);
-      window.location.href = "/login";
+      if (response.data.data && response.data.data.url && response.data.data.openSSO == "true") {
+        window.location.href = response.data.data.url;
+      } else {
+        window.location.href = "/login";
+      }
     }
   }).catch(error => {
     localStorage.removeItem(TokenKey);

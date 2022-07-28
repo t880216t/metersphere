@@ -135,9 +135,17 @@ export default {
     // 主页添加键盘事件,注意,不能直接在焦点事件上添加回车
     document.addEventListener("keydown", this.watchEnter);
     //
-    if (license.default) {
+    if (license && license.default) {
       license.default.valid(this);
     }
+
+    this.$get("/sso/open", response => {
+      this.openSSOData = response.data;
+      if (this.openSSOData && this.openSSOData.openSSO && this.openSSOData.url ){
+        window.location.href = this.openSSOData.url
+        // console.log(this.openSSOData)
+      }
+    })
 
     // 上次登录的用户
     this.lastUser = sessionStorage.getItem('lastUser');

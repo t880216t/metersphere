@@ -24,6 +24,15 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+
+import io.metersphere.base.domain.SystemParameter;
+import io.metersphere.commons.constants.ParamConstants;
+import io.metersphere.service.SystemParameterService;
+import org.apache.commons.collections.CollectionUtils;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+
 @RestController
 @RequestMapping
 public class LoginController {
@@ -32,6 +41,8 @@ public class LoginController {
     private UserService userService;
     @Resource
     private BaseDisplayService baseDisplayService;
+    @Resource
+    private SystemParameterService systemParameterService;
 
     @GetMapping(value = "/isLogin")
     public ResultHolder isLogin() throws NoSuchAlgorithmException {
@@ -78,8 +89,36 @@ public class LoginController {
     @MsAuditLog(module = OperLogModule.AUTH_TITLE, beforeEvent = "#msClass.getUserId(id)", type = OperLogConstants.LOGIN, title = "登出", msClass = SessionUtils.class)
     public ResultHolder logout() throws Exception {
         userService.logout();
+        String clientId = "";
+        String domain = "";
+        String open = "";
+        String result = "";
+        ResultHolder resultHolder = new ResultHolder();
+        HashMap<Object, Object> map = new HashMap<>();
+        try{
+            List<SystemParameter> params = systemParameterService.getParamList("sso");
+
+            if (!CollectionUtils.isEmpty(params)) {
+                for (SystemParameter param : params) {
+                    if (StringUtils.equals(param.getParamKey(), ParamConstants.SSO.URL.getValue())) {
+                        domain = param.getParamValue();
+                    } else if (StringUtils.equals(param.getParamKey(), ParamConstants.SSO.CLINETID.getValue())) {
+                        clientId = param.getParamValue();
+                    } else if (StringUtils.equals(param.getParamKey(), ParamConstants.SSO.OPEN.getValue())) {
+                        open = param.getParamValue();;
+                    }
+                }
+            }
+            if (StringUtils.equals(Boolean.TRUE.toString(), open)){
+                map.put("openSSO",open);
+                result = domain + "/input?client_id="+clientId+"&logout=1";
+                map.put("url",result);
+            }
+        }catch (Exception e){
+        }
         SecurityUtils.getSubject().logout();
-        return ResultHolder.success("");
+        resultHolder.setData(map);
+        return resultHolder;
     }
 
     /*Get default language*/

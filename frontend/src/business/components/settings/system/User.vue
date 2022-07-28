@@ -237,13 +237,13 @@ export default {
             trigger: 'blur'
           }
         ],
-        phone: [
-          {
-            pattern: PHONE_REGEX,
-            message: this.$t('user.mobile_number_format_is_incorrect'),
-            trigger: 'blur'
-          }
-        ],
+        // phone: [
+        //   {
+        //     pattern: PHONE_REGEX,
+        //     message: this.$t('user.mobile_number_format_is_incorrect'),
+        //     trigger: 'blur'
+        //   }
+        // ],
         email: [
           {required: true, message: this.$t('user.input_email'), trigger: 'blur'},
           {

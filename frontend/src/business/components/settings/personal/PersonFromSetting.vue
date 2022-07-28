@@ -67,13 +67,13 @@ export default {
             trigger: 'blur'
           }
         ],
-        phone: [
-          {
-            pattern: PHONE_REGEX,
-            message: this.$t('member.mobile_number_format_is_incorrect'),
-            trigger: 'blur'
-          }
-        ],
+        // phone: [
+        //   {
+        //     pattern: PHONE_REGEX,
+        //     message: this.$t('member.mobile_number_format_is_incorrect'),
+        //     trigger: 'blur'
+        //   }
+        // ],
         email: [
           {required: true, message: this.$t('member.input_email'), trigger: 'blur'},
           {

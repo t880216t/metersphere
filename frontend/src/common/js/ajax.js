@@ -30,7 +30,7 @@ export function getUploadConfig(url, formData) {
 
 
 // 登入请求不重定向
-let unRedirectUrls = new Set(['signin', 'ldap/signin', '/signin', '/ldap/signin']);
+let unRedirectUrls = new Set(['signin', 'ldap/signin', '/signin', '/ldap/signin', 'sso', 'sso/signin',]);
 // session 是否掉线
 let isSessionTimeout = false;
 

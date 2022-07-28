@@ -50,7 +50,7 @@
               "install", so unless you need to run some other yarn command,
               you can remove this whole <configuration> section.
               -->
-              <arguments>install</arguments>
+              <arguments>install --registry https://registry.npm.taobao.org</arguments>
             </configuration>
           </execution>
           <!-- Build and minify static files -->

@@ -216,6 +216,14 @@ public class UserService {
         userMapper.insertSelective(user);
     }
 
+    public void addSSOUser(User user) {
+        user.setCreateTime(System.currentTimeMillis());
+        user.setUpdateTime(System.currentTimeMillis());
+        user.setStatus(UserStatus.NORMAL);
+        checkEmailIsExist(user.getEmail());
+        userMapper.insertSelective(user);
+    }
+
     public void createOssUser(User user) {
         user.setCreateTime(System.currentTimeMillis());
         user.setUpdateTime(System.currentTimeMillis());
@@ -245,6 +253,27 @@ public class UserService {
         }
         if (StringUtils.equals(user.getStatus(), UserStatus.DISABLED)) {
             throw new DisabledAccountException();
+        }
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user, userDTO);
+
+        UserGroupPermissionDTO dto = getUserGroupPermission(userId);
+        userDTO.setUserGroups(dto.getUserGroups());
+        userDTO.setGroups(dto.getGroups());
+        userDTO.setGroupPermissions(dto.getList());
+        return userDTO;
+    }
+
+    public UserDTO getUserDTO(String userId, Boolean isSSO) {
+
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            return null;
+        }
+        if (!isSSO){
+            if (StringUtils.equals(user.getStatus(), UserStatus.DISABLED)) {
+                throw new DisabledAccountException();
+            }
         }
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
@@ -324,7 +353,7 @@ public class UserService {
 
     public void deleteUser(String userId) {
         SessionUser user = SessionUtils.getUser();
-        if (StringUtils.equals(user.getId(), userId)) {
+        if (user != null && StringUtils.equals(user.getId(), userId)) {
             MSException.throwException(Translator.get("cannot_delete_current_user"));
         }
 
@@ -443,6 +472,10 @@ public class UserService {
 
     public UserDTO getUserInfo(String userId) {
         return getUserDTO(userId);
+    }
+
+    public UserDTO getUserInfo(String userId, Boolean isSSO) {
+        return getUserDTO(userId, isSSO);
     }
 
     public List<User> getMemberList(QueryMemberRequest request) {
@@ -565,7 +598,10 @@ public class UserService {
         String login = (String) SecurityUtils.getSubject().getSession().getAttribute("authenticate");
         String username = StringUtils.trim(request.getUsername());
         String password = "";
-        if (!StringUtils.equals(login, UserSource.LDAP.name())) {
+        List<String>userSourceList = new ArrayList<String>();
+        userSourceList.add(UserSource.LDAP.name());
+        userSourceList.add(UserSource.SSO.name());
+        if (!userSourceList.contains(login)) {
             password = StringUtils.trim(request.getPassword());
             if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
                 return ResultHolder.error("user or password can't be null");

@@ -10,6 +10,7 @@ import io.metersphere.controller.request.HeaderRequest;
 import io.metersphere.dto.BaseSystemConfigDTO;
 import io.metersphere.dto.SystemStatisticData;
 import io.metersphere.ldap.domain.LdapInfo;
+import io.metersphere.sso.domain.SSOInfo;
 import io.metersphere.log.annotation.MsAuditLog;
 import io.metersphere.notice.domain.MailInfo;
 import io.metersphere.service.ProjectService;
@@ -98,6 +99,17 @@ public class SystemParameterController {
     @GetMapping("/ldap/info")
     public LdapInfo getLdapInfo() {
         return systemParameterService.getLdapInfo(ParamConstants.Classify.LDAP.getValue());
+    }
+
+    @PostMapping("/save/sso")
+    @MsAuditLog(module = OperLogModule.SYSTEM_PARAMETER_SETTING, type = OperLogConstants.UPDATE, beforeEvent = "#msClass.getLogDetails()", content = "#msClass.getLogDetails()", msClass = SystemParameterService.class)
+    public void saveSSO(@RequestBody List<SystemParameter> systemParameter) {
+        systemParameterService.saveSSO(systemParameter);
+    }
+
+    @GetMapping("/sso/info")
+    public SSOInfo getSSOInfo() {
+        return systemParameterService.getSSOInfo(ParamConstants.Classify.SSO.getValue());
     }
 
     @PostMapping("save/header")

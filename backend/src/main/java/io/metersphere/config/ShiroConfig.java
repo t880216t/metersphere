@@ -8,6 +8,7 @@ import io.metersphere.security.MsPermissionAnnotationMethodInterceptor;
 import io.metersphere.security.UserModularRealmAuthenticator;
 import io.metersphere.security.realm.LdapRealm;
 import io.metersphere.security.realm.LocalRealm;
+import io.metersphere.security.realm.SSORealm;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.aop.AnnotationResolver;
 import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
@@ -112,6 +113,10 @@ public class ShiroConfig implements EnvironmentAware {
         return new LdapRealm();
     }
 
+    @Bean
+    @DependsOn("lifecycleBeanPostProcessor")
+    public SSORealm ssoRealm() { return new SSORealm(); }
+
     @Bean(name = "lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
@@ -160,9 +165,11 @@ public class ShiroConfig implements EnvironmentAware {
         List<Realm> realmList = new ArrayList<>();
         LocalRealm localRealm = context.getBean(LocalRealm.class);
         LdapRealm ldapRealm = context.getBean(LdapRealm.class);
+        SSORealm ssoRealm = context.getBean(SSORealm.class);
         // 基本realm
         realmList.add(localRealm);
         realmList.add(ldapRealm);
+        realmList.add(ssoRealm);
         context.getBean(DefaultWebSecurityManager.class).setRealms(realmList);
     }
 

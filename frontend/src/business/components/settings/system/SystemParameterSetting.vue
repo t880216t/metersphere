@@ -11,13 +11,16 @@
       <el-tab-pane :label="$t('system_parameter_setting.ldap_setting')" name="ldap">
         <ldap-setting/>
       </el-tab-pane>
-      <el-tab-pane v-if="hasLicense()" :label="$t('display.title')" name="display">
+      <el-tab-pane :label="$t('system_parameter_setting.sso_setting')" name="sso">
+        <sso-setting/>
+      </el-tab-pane>
+      <el-tab-pane v-if="!hasLicense()" :label="$t('display.title')" name="display">
         <ms-display/>
       </el-tab-pane>
-      <el-tab-pane v-if="hasLicense()" :label="$t('auth_source.title')" name="auth">
+      <el-tab-pane v-if="!hasLicense()" :label="$t('auth_source.title')" name="auth">
         <ms-auth/>
       </el-tab-pane>
-      <el-tab-pane v-if="hasLicense()" :label="$t('module.title')" name="module">
+      <el-tab-pane v-if="!hasLicense()" :label="$t('module.title')" name="module">
         <ms-module/>
       </el-tab-pane>
     </el-tabs>
@@ -27,6 +30,7 @@
 <script>
 import EmailSetting from "./EmailSetting";
 import LdapSetting from "./LdapSetting";
+import SSOSetting from "./SSOSetting";
 import BaseSetting from "./BaseSetting";
 import {hasLicense} from '@/common/js/utils';
 
@@ -41,6 +45,7 @@ export default {
     BaseSetting,
     EmailSetting,
     LdapSetting,
+    'sso-setting': SSOSetting,
     "MsDisplay": display.default,
     "MsAuth": auth.default,
     "MsModule": module.default,

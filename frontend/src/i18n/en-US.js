@@ -2574,6 +2574,7 @@ export default {
   system_parameter_setting: {
     mailbox_service_settings: 'Mailbox Settings',
     ldap_setting: 'LDAP Setting',
+    sso_setting: 'SSO Setting',
     test_connection: 'Test connection',
     SMTP_host: 'SMTP host',
     SMTP_port: 'SMTP port',
@@ -2625,6 +2626,27 @@ export default {
     filter_cannot_be_empty: 'LDAP user filter cannot be empty',
     password_cannot_be_empty: 'LDAP password cannot be empty',
     mapping_cannot_be_empty: 'LDAP mapping cannot be empty',
+  },
+  sso: {
+    input_server_url_placeholder: 'http://192.168.56.73:8080',
+    input_client_id_placeholder: 'dfasdfasdf234235dfas',
+    input_secret_key_placeholder: 'dfadsfasdgadsfwerqw',
+    input_des_key_placeholder: 'dfads423dsfwerqw',
+    server: {
+      url: '认证服务器地址',
+      url_is_null: '认证服务器地址不可为空',
+    },
+    client: {
+      id: '客户端id',
+      id_is_null: '客户端id不可为空',
+    },
+    secret: {
+      key: '认证服务密钥',
+      desKey: '数据解密密钥',
+      key_is_null: '认证服务密钥不可为空',
+      desKey_is_null: '数据解密密钥不可为空',
+    },
+    open: '是否开启sso登录',
   },
   schedule: {
     input_email: "Please input email account",

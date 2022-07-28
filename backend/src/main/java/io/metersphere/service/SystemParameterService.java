@@ -17,6 +17,7 @@ import io.metersphere.controller.request.HeaderRequest;
 import io.metersphere.dto.BaseSystemConfigDTO;
 import io.metersphere.i18n.Translator;
 import io.metersphere.ldap.domain.LdapInfo;
+import io.metersphere.sso.domain.SSOInfo;
 import io.metersphere.log.utils.ReflexObjectUtil;
 import io.metersphere.log.vo.DetailColumn;
 import io.metersphere.log.vo.OperatingLogDetails;
@@ -203,7 +204,6 @@ public class SystemParameterService {
         return ldap;
     }
 
-
     /**
      * @param key System Param
      * @return 系统key对应的值 ｜ ""
@@ -354,4 +354,39 @@ public class SystemParameterService {
         }
         systemParameterMapper.updateByPrimaryKeySelective(systemParameter);
     }
+
+    public void saveSSO(List<SystemParameter> parameters) {
+        SystemParameterExample example = new SystemParameterExample();
+        parameters.forEach(param -> {
+            example.createCriteria().andParamKeyEqualTo(param.getParamKey());
+            if (systemParameterMapper.countByExample(example) > 0) {
+                systemParameterMapper.updateByPrimaryKey(param);
+            } else {
+                systemParameterMapper.insert(param);
+            }
+            example.clear();
+        });
+    }
+
+    public SSOInfo getSSOInfo(String type) {
+        List<SystemParameter> params = getParamList(type);
+        SSOInfo sso = new SSOInfo();
+        if (!CollectionUtils.isEmpty(params)) {
+            for (SystemParameter param : params) {
+                if (StringUtils.equals(param.getParamKey(), ParamConstants.SSO.URL.getValue())) {
+                    sso.setUrl(param.getParamValue());
+                } else if (StringUtils.equals(param.getParamKey(), ParamConstants.SSO.CLINETID.getValue())) {
+                    sso.setClientId(param.getParamValue());
+                } else if (StringUtils.equals(param.getParamKey(), ParamConstants.SSO.SECRETKEY.getValue())) {
+                    sso.setSecretKey(param.getParamValue());
+                } else if (StringUtils.equals(param.getParamKey(), ParamConstants.SSO.DESKEY.getValue())) {
+                    sso.setDesKey(param.getParamValue());
+                } else if (StringUtils.equals(param.getParamKey(), ParamConstants.SSO.OPEN.getValue())) {
+                    sso.setOpen(param.getParamValue());
+                }
+            }
+        }
+        return sso;
+    }
+
 }

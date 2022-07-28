@@ -31,6 +31,7 @@ public interface ParamConstants {
         MAIL("smtp"),
         BASE("base"),
         LDAP("ldap"),
+        SSO("sso"),
         REGISTRY("registry");
 
         private String value;
@@ -140,6 +141,25 @@ public interface ParamConstants {
         private String value;
 
         LDAP(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String getValue() {
+            return value;
+        }
+    }
+
+    enum SSO implements ParamConstants {
+        URL("sso.url"),
+        CLINETID("sso.clientId"),
+        SECRETKEY("sso.secretKey"),
+        DESKEY("sso.desKey"),
+        OPEN("sso.open");
+
+        private String value;
+
+        SSO(String value) {
             this.value = value;
         }
 
