@@ -7,7 +7,7 @@
     <parent>
         <artifactId>metersphere-server</artifactId>
         <groupId>io.metersphere</groupId>
-        <version>1.9</version>
+        <version>${revision}</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -15,7 +15,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <shiro.version>1.8.0</shiro.version>
         <java.version>11</java.version>
         <skipAntRunForJenkins>false</skipAntRunForJenkins>
         <!-- 第三方不包统一版本，如果不指定，Spring 会为我们选择匹配的版本 -->
@@ -306,9 +305,9 @@
         </dependency>
         <!-- 反射工具包 -->
         <dependency>
-            <groupId>net.oneandone.reflections8</groupId>
-            <artifactId>reflections8</artifactId>
-            <version>0.11.7</version>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.10.2</version>
         </dependency>
         <!-- k8s client -->
         <dependency>
@@ -560,7 +559,7 @@
                         <artifactItem>
                             <groupId>org.python</groupId>
                             <artifactId>jython-standalone</artifactId>
-                            <version>2.7.2</version>
+                            <version>2.7.0</version>
                             <type>jar</type>
                             <overWrite>true</overWrite>
                             <outputDirectory>src/main/resources/jmeter/lib/ext</outputDirectory>

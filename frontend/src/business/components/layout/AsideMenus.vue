@@ -14,13 +14,13 @@
         <span slot="title" class="ms-menu-item-title">{{ $t('commons.my_workstation') }}</span>
       </div>
     </el-menu-item>
-    <el-menu-item index="/track" v-if="check('testTrack')" onselectstart="return false"
-                  v-permission="['PROJECT_TRACK_CASE:READ','PROJECT_TRACK_PLAN:READ','PROJECT_TRACK_REVIEW:READ', 'PROJECT_TRACK_ISSUE:READ', 'PROJECT_TRACK_REPORT:READ']">
-      <div>
-        <svg-icon iconClass="track" class-name="ms-menu-img"/>
-        <span slot="title" class="ms-menu-item-title">{{ $t('test_track.test_track') }}</span>
-      </div>
-    </el-menu-item>
+<!--    <el-menu-item index="/track" v-if="check('testTrack')" onselectstart="return false"-->
+<!--                  v-permission="['PROJECT_TRACK_CASE:READ','PROJECT_TRACK_PLAN:READ','PROJECT_TRACK_REVIEW:READ', 'PROJECT_TRACK_ISSUE:READ', 'PROJECT_TRACK_REPORT:READ']">-->
+<!--      <div>-->
+<!--        <svg-icon iconClass="track" class-name="ms-menu-img"/>-->
+<!--        <span slot="title" class="ms-menu-item-title">{{ $t('test_track.test_track') }}</span>-->
+<!--      </div>-->
+<!--    </el-menu-item>-->
     <el-menu-item index="/api" @click="active()" v-if="check('api')" onselectstart="return false"
                   v-permission="['PROJECT_API_DEFINITION:READ','PROJECT_API_SCENARIO:READ','PROJECT_API_REPORT:READ']">
       <div>
@@ -35,12 +35,12 @@
         <span slot="title" class="ms-menu-item-title">{{ $t('commons.ui') }}</span>
       </div>
     </el-menu-item>
-    <el-menu-item v-if="!hasLicense()" @click="clickPlanMenu">
-      <div>
-        <svg-icon iconClass="ui" class-name="ms-menu-img"/>
-        <span slot="title" class="ms-menu-item-title">{{ $t('commons.ui') }}</span>
-      </div>
-    </el-menu-item>
+<!--    <el-menu-item v-if="!hasLicense()" @click="clickPlanMenu">-->
+<!--      <div>-->
+<!--        <svg-icon iconClass="ui" class-name="ms-menu-img"/>-->
+<!--        <span slot="title" class="ms-menu-item-title">{{ $t('commons.ui') }}</span>-->
+<!--      </div>-->
+<!--    </el-menu-item>-->
     <el-menu-item index="/performance" v-if="check('performance')"
                   onselectstart="return false"
                   v-permission="['PROJECT_PERFORMANCE_TEST:READ','PROJECT_PERFORMANCE_REPORT:READ']">
@@ -49,13 +49,13 @@
         <span slot="title" class="ms-menu-item-title">{{ $t('commons.performance') }}</span>
       </div>
     </el-menu-item>
-    <el-menu-item index="/report" v-if="check('reportStat')" onselectstart="return false"
-                  v-permission="['PROJECT_REPORT_ANALYSIS:READ']">
-      <div>
-        <svg-icon iconClass="report" class-name="ms-menu-img"/>
-        <span slot="title" class="ms-menu-item-title">{{ $t('commons.report_statistics.title') }}</span>
-      </div>
-    </el-menu-item>
+<!--    <el-menu-item index="/report" v-if="check('reportStat')" onselectstart="return false"-->
+<!--                  v-permission="['PROJECT_REPORT_ANALYSIS:READ']">-->
+<!--      <div>-->
+<!--        <svg-icon iconClass="report" class-name="ms-menu-img"/>-->
+<!--        <span slot="title" class="ms-menu-item-title">{{ $t('commons.report_statistics.title') }}</span>-->
+<!--      </div>-->
+<!--    </el-menu-item>-->
 
     <el-menu-item index="/project" onselectstart="return false"
                   v-permission="['PROJECT_USER:READ', 'PROJECT_ENVIRONMENT:READ', 'PROJECT_OPERATING_LOG:READ', 'PROJECT_FILE:READ+JAR', 'PROJECT_FILE:READ+FILE',
