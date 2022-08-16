@@ -429,12 +429,12 @@ export function setLightColor() {
   // 自定义主题风格
   document.body.style.setProperty('--aside_color', "#fff");
   document.body.style.setProperty('--font_color', "#505266");
-  document.body.style.setProperty('--font_light_color', "#783887");
+  document.body.style.setProperty('--font_light_color', "#001529");
 }
 
 export function setCustomizeColor(color) {
   // 自定义主题风格
-  document.body.style.setProperty('--aside_color', color || '#783887');
+  document.body.style.setProperty('--aside_color', color || '#001529');
   document.body.style.setProperty('--font_color', "#fff");
   document.body.style.setProperty('--font_light_color', "#fff");
 }

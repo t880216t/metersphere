@@ -6,7 +6,7 @@
     router>
     <el-menu-item>
       <div>
-        <img :src="'/display/file/logo'" class="logo" alt="">
+        <img src="@/assets/mic_logo.svg" class="logo" alt="">
         <span slot="title" class="ms-logo-title">{{ title }}</span>
       </div>
     </el-menu-item>
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     title() {
-      return localStorage.getItem("sysTitle") || "MeterSphere";
+      return localStorage.getItem("sysTitle") || "MIC Api Test";
     }
   },
   props: {

@@ -1,11 +1,11 @@
 <template>
   <div class="container" v-if="ready">
     <el-row type="flex">
-      <el-col :span="12">
+      <el-col :span="24">
         <div class="content">
           <div class="title">
             <div class="title-img">
-              <img :src="'/display/file/loginLogo'" alt="">
+              <img src="@/assets/mic_login_custom_logo.svg" alt="">
             </div>
             <div class="welcome">
               <span>{{ loginTitle }}</span>
@@ -44,13 +44,13 @@
         </div>
       </el-col>
 
-      <div class="divider"/>
+<!--      <div class="divider"/>-->
 
-      <el-col :span="12">
-        <div class="content">
-          <img class="login-image" :src="'/display/file/loginImage'" alt="">
-        </div>
-      </el-col>
+<!--      <el-col :span="12">-->
+<!--        <div class="content">-->
+<!--          <img class="login-image" :src="'/display/file/loginImage'" alt="">-->
+<!--        </div>-->
+<!--      </el-col>-->
 
     </el-row>
 
@@ -83,7 +83,7 @@ export default {
       authSources: [],
       loginUrl: 'signin',
       lastUser: null,
-      loginTitle: this.$t('commons.welcome')
+      loginTitle: 'MIC天宫子系统-接口测试系统'
     };
   },
   beforeCreate() {
