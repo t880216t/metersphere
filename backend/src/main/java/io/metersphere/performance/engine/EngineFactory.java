@@ -75,7 +75,7 @@ public class EngineFactory {
         }
         if (type == ResourcePoolTypeEnum.K8S) {
             try {
-                return (Engine) ConstructorUtils.invokeConstructor(getKubernetesTestEngineClass(), loadTestReport);
+                return ConstructorUtils.invokeConstructor(getKubernetesTestEngineClass(), loadTestReport);
             } catch (Exception e) {
                 LogUtil.error(e);
                 return null;
@@ -86,7 +86,7 @@ public class EngineFactory {
 
     public static Engine createApiEngine(JmeterRunRequestDTO runRequest) {
         try {
-            return (Engine) ConstructorUtils.invokeConstructor(getKubernetesTestEngineClass(), runRequest);
+            return ConstructorUtils.invokeConstructor(getKubernetesTestEngineClass(), runRequest);
         } catch (Exception e) {
             LogUtil.error(e);
             MSException.throwException(e.getMessage());
