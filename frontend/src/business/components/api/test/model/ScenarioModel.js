@@ -627,7 +627,7 @@ export class ConfigCenter extends BaseConfig {
 }
 
 export class DatabaseConfig extends BaseConfig {
-  static DRIVER_CLASS = ["com.mysql.jdbc.Driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver", "org.postgresql.Driver", "oracle.jdbc.OracleDriver", "com.cloudera.impala.jdbc41.Driver", "org.apache.hive.jdbc.HiveDriver"];
+  static DRIVER_CLASS = ["com.mysql.jdbc.Driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver", "org.postgresql.Driver", "oracle.jdbc.OracleDriver", "com.cloudera.impala.jdbc41.Driver"];
 
   constructor(options) {
     super();
