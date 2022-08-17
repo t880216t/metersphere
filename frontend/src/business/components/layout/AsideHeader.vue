@@ -5,10 +5,10 @@
     :collapse="isCollapse"
     router>
     <el-menu-item>
-      <div>
+      <a href="/">
         <img src="@/assets/mic_logo.svg" class="logo" alt="">
         <span slot="title" class="ms-logo-title">{{ title }}</span>
-      </div>
+      </a>
     </el-menu-item>
   </el-menu>
 </template>
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     title() {
-      return localStorage.getItem("sysTitle") || "MIC Api Test";
+      return localStorage.getItem("sysTitle") || "天宫-Api Test";
     }
   },
   props: {
