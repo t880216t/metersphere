@@ -5,7 +5,7 @@
     :collapse="isCollapse"
     router>
     <el-menu-item>
-      <a href="/">
+      <a href="http://xspace.vemic.com">
         <img src="@/assets/mic_logo.svg" class="logo" alt="">
         <span slot="title" class="ms-logo-title">{{ title }}</span>
       </a>
