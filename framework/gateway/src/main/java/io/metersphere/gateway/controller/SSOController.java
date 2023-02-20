@@ -24,6 +24,13 @@ public class SSOController {
     @Resource
     private SSOService ssoService;
 
+    @GetMapping("/signin")
+    public Rendering callbackWithAuthId(@RequestParam("code") String code, @RequestParam("uc") String uc, @RequestParam("state") String authId, WebSession session, Locale locale) throws Exception {
+        Optional<SessionUser> sessionUser = ssoService.exchangeTokenCustom(code, uc, authId, session, locale);
+        return Rendering.redirectTo("/#/?_token=" + CodingUtil.base64Encoding(session.getId()) + "&_csrf=" + sessionUser.get().getCsrfToken())
+                .build();
+    }
+
     @GetMapping("callback/{authId}")
     @MsAuditLog(module = OperLogModule.AUTH_TITLE, type = OperLogConstants.LOGIN, title = "登录")
     public Rendering callbackWithAuthId(@RequestParam("code") String code, @PathVariable("authId") String authId, WebSession session, Locale locale) throws Exception {

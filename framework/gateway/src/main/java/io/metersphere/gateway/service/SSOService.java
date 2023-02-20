@@ -65,6 +65,43 @@ public class SSOService {
     @Resource
     private UserLoginService userLoginService;
 
+    public Optional<SessionUser> exchangeTokenCustom(String code, String uc, String authId, WebSession session, Locale locale) throws Exception {
+        AuthSource authSource = authSourceService.getAuthSource(authId);
+        Map config = JSON.parseObject(authSource.getConfiguration(), Map.class);
+        String tokenUrl = (String) config.get("tokenUrl");
+
+        RestTemplate restTemplate = getRestTemplateIgnoreSSL();
+        HttpHeaders headers = new HttpHeaders();
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        //接口参数
+        map.add("code", code);
+        map.add("uc", uc);
+        map.add("client_id", config.get("clientId"));
+        map.add("client_secret", config.get("secret"));
+        map.add("grant_type", "authorization_code");
+        map.add("redirect_uri", config.get("redirectUrl"));
+        //头部类型
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        //构造实体对象
+        HttpEntity<MultiValueMap<String, Object>> param = new HttpEntity<>(map, headers);
+        //发起请求,服务地址，请求参数，返回消息体的数据类型
+        ResponseEntity<String> response = restTemplate.postForEntity(tokenUrl, param, String.class);
+
+        String content = response.getBody();
+        Map jsonObject = JSON.parseObject(content, Map.class);
+        String accessToken = (String) jsonObject.get("access_token");
+        String idToken = (String) jsonObject.get("refresh_token");
+        Map userinfo = (Map) jsonObject.get("userinfo");
+
+        session.getAttributes().put("idToken", idToken);
+
+        if (StringUtils.isBlank(accessToken)) {
+            MSException.throwException(content);
+        }
+
+        return doCustomSSOLogin(authSource, userinfo, accessToken, session, locale);
+    }
+
     public Optional<SessionUser> exchangeToken(String code, String authId, WebSession session, Locale locale) throws Exception {
         AuthSource authSource = authSourceService.getAuthSource(authId);
         Map config = JSON.parseObject(authSource.getConfiguration(), Map.class);
@@ -120,6 +157,36 @@ public class SSOService {
                 new HttpComponentsClientHttpRequestFactory(httpClient);
 
         return new RestTemplate(requestFactory);
+    }
+
+    private Optional<SessionUser> doCustomSSOLogin(AuthSource authSource, Map userInfo, String accessToken, WebSession session, Locale locale) throws Exception {
+
+        String email = (String) userInfo.get("email");
+        String name = (String) userInfo.get("name");
+        String username = (String) userInfo.get("username");
+        // userId 或 email 有一个相同即为存在本地用户
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername(username);
+        loginRequest.setPassword("nothing");
+        loginRequest.setAuthenticate(authSource.getType());
+        User u = userLoginService.selectUser(username, email);
+        if (u == null) {
+            // 新建用户
+            User user = new User();
+            user.setId(username);
+            user.setName(name);
+            user.setEmail(email);
+            user.setSource(authSource.getType());
+            userLoginService.createOssUser(user);
+        } else {
+            if (StringUtils.equals(u.getEmail(), email) && !StringUtils.equals(u.getId(), username)) {
+                MSException.throwException("email already exists!");
+            }
+        }
+        Optional<SessionUser> userOptional = userLoginService.login(loginRequest, session, locale);
+        session.getAttributes().put("authenticate", authSource.getType());
+        session.getAttributes().put("authId", authSource.getId());
+        return userOptional;
     }
 
     private Optional<SessionUser> doOICDLogin(AuthSource authSource, String accessToken, WebSession session, Locale locale) throws Exception {

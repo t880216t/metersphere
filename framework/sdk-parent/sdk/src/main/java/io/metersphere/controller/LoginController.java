@@ -1,19 +1,25 @@
 package io.metersphere.controller;
 
+import io.metersphere.base.domain.AuthSource;
+import io.metersphere.base.domain.SystemParameter;
 import io.metersphere.commons.constants.OperLogConstants;
 import io.metersphere.commons.constants.OperLogModule;
 import io.metersphere.commons.constants.SessionConstants;
 import io.metersphere.commons.constants.UserSource;
 import io.metersphere.commons.user.SessionUser;
+import io.metersphere.commons.utils.Pager;
 import io.metersphere.commons.utils.RsaKey;
 import io.metersphere.commons.utils.RsaUtil;
 import io.metersphere.commons.utils.SessionUtils;
 import io.metersphere.controller.handler.ResultHolder;
+import io.metersphere.service.AuthSourceService;
 import io.metersphere.dto.ServiceDTO;
+import io.metersphere.dto.TaskInfoResult;
 import io.metersphere.dto.UserDTO;
 import io.metersphere.i18n.Translator;
 import io.metersphere.log.annotation.MsAuditLog;
 import io.metersphere.request.LoginRequest;
+import io.metersphere.request.AuthSourceRequest;
 import io.metersphere.service.BaseDisplayService;
 import io.metersphere.service.BaseUserService;
 import io.metersphere.service.SSOLogoutService;
@@ -26,6 +32,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +45,8 @@ public class LoginController {
 
     @Resource
     private BaseUserService baseUserService;
+    @Resource
+    private AuthSourceService authSourceService;
     @Resource
     private BaseDisplayService baseDisplayService;
     @Resource
@@ -114,5 +123,40 @@ public class LoginController {
     @GetMapping(value = "/services")
     public List<ServiceDTO> services() {
         return List.of(new ServiceDTO(serviceId, port));
+    }
+
+    @GetMapping("/authsource/list/allenable")
+    public Mono<ResultHolder> listAllEnable() {
+        return Mono.just(ResultHolder.success(authSourceService.listAllEnable()));
+    }
+
+    @PostMapping("/authsource/list/{goPage}/{pageSize}")
+    public Pager<List<AuthSource>> listAuthSource(@PathVariable int goPage, @PathVariable int pageSize, @RequestBody AuthSourceRequest request) {
+        return authSourceService.listAllAuthSource(request, goPage, pageSize);
+    }
+
+    @GetMapping("/authsource/update/{sourceId}/status/{status}")
+    public void updateAuthSocurceStatus(@PathVariable String sourceId, @PathVariable String status) {
+        authSourceService.updateAuthSource(sourceId, status);
+    }
+
+    @PostMapping("/authsource/update")
+    public void updateAuthSocurce(@RequestBody AuthSourceRequest request) {
+        authSourceService.updateAuthSourceByRecord(request);
+    }
+
+    @PostMapping("/authsource/add")
+    public void saveAuthSource(@RequestBody AuthSourceRequest request) {
+        authSourceService.saveAuthSource(request);
+    }
+
+    @GetMapping("/authsource/get/{sourceId}")
+    public ResultHolder getAuthSource(@PathVariable String sourceId) {
+        return ResultHolder.success(authSourceService.getAuthSource(sourceId));
+    }
+
+    @GetMapping("/authsource/{sourceId}")
+    public ResultHolder getAuthSourceInfo(@PathVariable String sourceId) {
+        return ResultHolder.success(authSourceService.getAuthSource(sourceId));
     }
 }

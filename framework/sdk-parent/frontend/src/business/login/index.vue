@@ -150,16 +150,41 @@ export default {
     //
     checkLicense()
       .then(() => {
-        if (!hasLicense()) {
-          return;
-        }
+        // if (!hasLicense()) {
+        //   return;
+        // }
         // 网关统一sso登录，本地不再提供这个登录方式
-        if (checkMicroMode()) {
-          getAuthSources()
-            .then(response => {
-              this.authSources = response.data;
-            });
-        }
+        // const micro = checkMicroMode()
+        // console.log("======>", micro)
+        // if (micro) {
+        //   getAuthSources()
+        //     .then(response => {
+        //       this.authSources = response.data;
+        //     });
+        // }
+        getAuthSources()
+          .then(response => {
+            this.authSources = response.data;
+            this.authSources.forEach(source => {
+              const authId = source.id
+              if (source.status === "ENABLE" && source.type === "OAuth2"){
+                let config = JSON.parse(source.configuration);
+                let redirectUrl = eval('`' + config.redirectUrl + '`');
+                let url;
+                url = config.authUrl
+                  + "?client_id=" + config.clientId
+                  + "&response_type=code"
+                  + "&redirect_uri=" + redirectUrl
+                  + "&state=" + authId;
+                if (config.scope) {
+                  url += "&scope=" + config.scope;
+                }
+                if (url) {
+                  window.location.href = url;
+                }
+              }
+            })
+          });
         getDisplayInfo()
           .then(response => {
             if (response.data[3].paramValue) {

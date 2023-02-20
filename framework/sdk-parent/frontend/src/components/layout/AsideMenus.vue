@@ -28,19 +28,19 @@
         <span slot="title" class="ms-menu-item-title">{{ $t('commons.api') }}</span>
       </div>
     </el-menu-item>
-    <el-menu-item index="/ui" @click="active()" v-if="hasLicense() && check('ui')" onselectstart="return false"
-                  v-permission="['PROJECT_UI_SCENARIO:READ','PROJECT_UI_REPORT:READ', 'PROJECT_UI_ELEMENT:READ']">
-      <div>
-        <svg-icon iconClass="ui" class-name="ms-menu-img"/>
-        <span slot="title" class="ms-menu-item-title">{{ $t('commons.ui') }}</span>
-      </div>
-    </el-menu-item>
-    <el-menu-item v-if="!hasLicense()" @click="clickPlanMenu">
-      <div>
-        <svg-icon iconClass="ui" class-name="ms-menu-img"/>
-        <span slot="title" class="ms-menu-item-title">{{ $t('commons.ui') }}</span>
-      </div>
-    </el-menu-item>
+<!--    <el-menu-item index="/ui" @click="active()" v-if="hasLicense() && check('ui')" onselectstart="return false"-->
+<!--                  v-permission="['PROJECT_UI_SCENARIO:READ','PROJECT_UI_REPORT:READ', 'PROJECT_UI_ELEMENT:READ']">-->
+<!--      <div>-->
+<!--        <svg-icon iconClass="ui" class-name="ms-menu-img"/>-->
+<!--        <span slot="title" class="ms-menu-item-title">{{ $t('commons.ui') }}</span>-->
+<!--      </div>-->
+<!--    </el-menu-item>-->
+<!--    <el-menu-item v-if="!hasLicense()" @click="clickPlanMenu">-->
+<!--      <div>-->
+<!--        <svg-icon iconClass="ui" class-name="ms-menu-img"/>-->
+<!--        <span slot="title" class="ms-menu-item-title">{{ $t('commons.ui') }}</span>-->
+<!--      </div>-->
+<!--    </el-menu-item>-->
     <el-menu-item index="/performance" v-if="check('performance')"
                   onselectstart="return false"
                   v-permission="['PROJECT_PERFORMANCE_HOME:READ', 'PROJECT_PERFORMANCE_TEST:READ','PROJECT_PERFORMANCE_REPORT:READ']">

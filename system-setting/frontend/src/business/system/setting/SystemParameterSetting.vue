@@ -11,13 +11,18 @@
       <el-tab-pane :label="$t('system_parameter_setting.ldap_setting')" name="ldap">
         <ldap-setting/>
       </el-tab-pane>
-      <el-tab-pane v-if="hasLicense()" :label="$t('display.title')" name="display">
+      <el-tab-pane
+        v-if="hasLicense()"
+        :label="$t('display.title')" name="display">
         <mx-display/>
       </el-tab-pane>
-      <el-tab-pane v-if="hasLicense()" :label="$t('auth_source.title')" name="auth">
+      <el-tab-pane
+        :label="$t('auth_source.title')" name="auth">
         <mx-auth/>
       </el-tab-pane>
-      <el-tab-pane v-if="hasLicense()" :label="$t('module.title')" name="module">
+      <el-tab-pane
+        v-if="hasLicense()"
+        :label="$t('module.title')" name="module">
         <mx-module/>
       </el-tab-pane>
     </el-tabs>
